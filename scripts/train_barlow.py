@@ -214,11 +214,12 @@ def train():
         train=False,
     ).cost_analysis()
 
-    flops = (
-        flop_analysis[0]["flops"]
-        if isinstance(flop_analysis, list)
-        else flop_analysis.get("flops", 0)
-    )
+    if flop_analysis is None:
+        flops = 0
+    elif isinstance(flop_analysis, list):
+        flops = flop_analysis[0].get("flops", 0)
+    else:
+        flops = flop_analysis.get("flops", 0)
 
     print(f"FLOPs (per forward pass): {flops / 1e6:.4f}M")
 
